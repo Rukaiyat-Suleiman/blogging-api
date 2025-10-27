@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUKI BLOGS</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace; 
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        h2 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-decoration: underline;
+            text-align: center;
+            color: #fff;
+        }
+        h3 {
+            font-size: 1.6em;
+            margin: 25px 0 15px 0;
+            color: #fff;
+            border-bottom: 1px dashed #444;
+            padding-bottom: 5px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            border: 3px solid #fff;
+            box-shadow: none;
+            padding: 30px;
+            background: #222;
+        }
+
+        a {
+            color: #ff0;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+        
+        .action-buttons {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            border: 2px solid #fff;
+            background: #000;
+            color: #fff;
+            margin: 0 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: #000;
+            color: #fff;
+            border-color: #fff; 
+        }
+        .btn-primary:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: none;
+        }
+
+        .blog-item {
+            border: 2px solid #fff;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #333;
+        }
+        .blog-item h4 {
+            font-size: 1.3em;
+            margin: 0 0 8px 0;
+            color: #ff0;
+        }
+        .blog-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-edit, .blog-actions button {
+            all: unset;
+            display: inline-block;
+            padding: 5px 10px;
+            border: 1px solid #fff;
+            background: #000;
+            color: #fff;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-edit:hover, .blog-actions button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-delete {
+            border-color: #f00;
+            color: #f00;
+            background: #000;
+        }
+        .blog-actions form button.btn-delete {
+            border-color: #f00;
+            color: #f00;
+            background: #000;
+        }
+        .btn-delete:hover, .blog-actions form button.btn-delete:hover {
+            background: #f00;
+            color: #000;
+            box-shadow: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 2px solid #fff;
+            font-weight: bold;
+            color: #fff;
+            font-size: 0.9em;
+            width: 800px;
+            max-width: 100%;
+        }
+
+        .blog-list p {
+            padding: 10px;
+            border: 1px solid #444;
+            text-align: center;
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-section">
+            <h2>HELLO, <%= user.first_name.toUpperCase() %>!</h2>
+            <div class="action-buttons">
+                <a href="/" class="btn">ALL BLOGS</a>
+                <a href="/blogs/create" class="btn btn-primary">NEW BLOG</a>
+                <a href="/auth/logout" class="btn">LOGOUT</a>
+            </div>
+        </div>
+        
+        <div class="blog-list">
+            <h3>YOUR POSTS</h3>
+            <% if (blogs && blogs.length > 0) { %>
+                <% blogs.forEach(blog => { %>
+                    <div class="blog-item">
+                        <h4><%= blog.title %></h4>
+                        <p><%= blog.content.substring(0, 150) %>...</p>
+                        <div class="blog-actions">
+                            <a href="/blogs/<%= blog._id %>/edit" class="btn-edit">EDIT</a>
+                            <form action="/blogs/<%= blog._id %>?_method=DELETE" method="POST" style="display: inline;">
+                                <button type="submit" class="btn-delete">DEL</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>NO BLOGS YET. CREATE ONE?</p>
+            <% } %>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        DASHBOARD V1
+    </footer>
+</body>
+</html>

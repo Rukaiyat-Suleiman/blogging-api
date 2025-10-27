@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace; 
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px 0;
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        
+        /* CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 450px; /* Reduced max-width for a focused login box */
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        
+        /* SECTION (LOGIN BOX) */
+        .login-section {
+            border: 3px solid #fff;
+            padding: 30px;
+            background: #222;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-decoration: underline;
+            text-align: center;
+            color: #fff;
+        }
+        
+        /* FORM INPUTS */
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #000; /* Inputs look better dark with this theme */
+            color: #fff;
+            border: 2px solid #fff;
+            font-size: 1em;
+            font-family: 'Consolas', 'Monaco', monospace;
+            box-sizing: border-box;
+        }
+        input::placeholder {
+            color: #aaa;
+        }
+
+        /* BUTTON */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.2s ease-in-out;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        .btn:hover {
+            background: #fff;
+            color: #000;
+        }
+        
+        /* LINKS */
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.9em;
+        }
+        a {
+            color: #ff0;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+        
+        /* ERROR MESSAGE */
+        .error-message {
+            background: #f00;
+            color: #000;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px solid #000;
+            font-weight: bold;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 2px solid #fff;
+            font-weight: bold;
+            color: #fff;
+            font-size: 0.9em;
+            width: 450px; /* Match container max-width */
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <main class="login-section">
+            <h2>WELCOME BACK</h2>
+            <% if (typeof error !== 'undefined') { %>
+                <div class="error-message"><%= message %></div>
+            <% } %>
+            <form action="/auth/login" method="POST">
+                <input type="email" name="email" placeholder="EMAIL" required>
+                <input type="password" name="password" placeholder="PASSWORD" required>
+                <button type="submit" class="btn">LOGIN</button>
+            </form>
+            <div class="signup-link">
+                <p>NO ACCOUNT? <a href="/auth/signup">SIGN UP</a></p>
+            </div>
+        </main>
+    </div>
+    <footer class="footer">
+        LOGIN V1
+    </footer>
+</body>
+</html>

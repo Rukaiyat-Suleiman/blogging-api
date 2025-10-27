@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= blog.title %></title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace; 
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* CONTAINER */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            border: 3px solid #fff;
+            padding: 30px;
+            background: #222;
+            box-sizing: border-box;
+        }
+
+        /* LINKS */
+        a {
+            color: #ff0;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+
+        /* TOP NAVIGATION */
+        .page-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* BUTTONS (GENERAL) */
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            border: 2px solid #fff;
+            background: #000;
+            color: #fff;
+            margin-right: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn:hover {
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+        }
+        
+        /* BLOG HEADER */
+        .blog-title {
+            font-size: 2.5em;
+            margin: 0 0 15px 0;
+            text-decoration: underline;
+            word-wrap: break-word; /* Ensure long titles wrap */
+        }
+        
+        /* STATE BADGES */
+        .state-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 0.7em;
+            text-transform: uppercase;
+            font-weight: bold;
+            border: 1px solid #fff;
+            margin-left: 10px;
+            vertical-align: top;
+        }
+        .state-published {
+             background: #000;
+             color: #fff;
+             border-color: #fff;
+        }
+        .state-draft {
+            background: #ff0; /* Yellow background for draft */
+            color: #000;
+            border-color: #ff0;
+        }
+        
+        /* METADATA */
+        .blog-meta {
+            font-size: 0.95em;
+            color: #aaa;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted #444;
+        }
+
+        /* CONTENT */
+        .blog-content {
+            margin-bottom: 30px;
+        }
+        /* Basic markdown/content styling for readability */
+        .blog-content p {
+            margin-bottom: 1em;
+        }
+        .blog-content pre, .blog-content code {
+            background: #000;
+            border: 1px solid #444;
+            padding: 5px;
+            overflow-x: auto;
+            display: block;
+        }
+
+        /* ACTIONS (EDIT/DELETE) */
+        .blog-actions {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #fff;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn-edit, .blog-actions button {
+            all: unset;
+            display: inline-block;
+            padding: 8px 12px;
+            border: 1px solid #fff;
+            background: #000;
+            color: #fff;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-edit:hover, .blog-actions button:hover {
+            background: #fff;
+            color: #000;
+        }
+        .btn-delete {
+            border-color: #f00;
+            color: #f00;
+            background: #000;
+        }
+        .blog-actions form button.btn-delete {
+            border-color: #f00;
+            color: #f00;
+            background: #000;
+        }
+        .btn-delete:hover, .blog-actions form button.btn-delete:hover {
+            background: #f00;
+            color: #000;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 2px solid #fff;
+            font-weight: bold;
+            color: #fff;
+            font-size: 0.9em;
+            width: 900px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <a href="/" class="btn">← BACK</a>
+            <a href="/auth/logout" class="btn">LOGOUT</a>
+        </div>
+
+        <article>
+            <header class="blog-header">
+                <h1 class="blog-title">
+                    <%= blog.title %>
+                    <span class="state-badge state-<%= blog.state.toLowerCase() %>"><%= blog.state.toUpperCase() %></span>
+                </h1>
+                <div class="blog-meta">
+                    BY **<%= blog.author.first_name %> <%= blog.author.last_name %>** | 
+                    <%= new Date(blog.createdAt).toLocaleDateString() %> | 
+                    <%= blog.readCount %> READS | <%= blog.readingTime %> MIN READ
+                </div>
+            </header>
+
+            <div class="blog-content">
+                <%- blog.content %>
+            </div>
+        </article>
+
+        <% if (typeof user !== 'undefined' && blog.author._id.toString() === user._id.toString()) { %>
+            <div class="blog-actions">
+                <a href="/blogs/<%= blog._id %>/edit" class="btn-edit">EDIT</a>
+                <form action="/blogs/<%= blog._id %>?_method=DELETE" method="POST" style="display: inline;">
+                    <button type="submit" class="btn-delete">DEL</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
+    
+    <footer class="footer">
+        BLOG VIEW V1
+    </footer>
+</body>
+</html>

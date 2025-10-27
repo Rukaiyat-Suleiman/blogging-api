@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof blog === 'undefined' ? 'NEW BLOG' : 'EDIT BLOG' %></title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            border: 3px solid #fff;
+            padding: 20px;
+            background: #222;
+        }
+        a {
+            color: #ff0;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            margin-bottom: 10px;
+        }
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .btn-submit {
+            background: #000;
+            color: #fff;
+            padding: 12px 20px;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .btn-submit:hover {
+            background: #fff;
+            color: #000;
+        }
+        .state-description {
+            font-size: 0.9em;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        .form-actions {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .error-message {
+            background: #f00;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #000;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 2px solid #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← BACK</a>
+        <h2><%= typeof blog === 'undefined' ? 'CREATE BLOG' : 'EDIT BLOG' %></h2>
+
+        <% if (typeof error !== 'undefined') { %>
+            <div class="error-message"><%= message %></div>
+        <% } %>
+
+        <form action="<%= typeof blog === 'undefined' ? '/blogs' : '/blogs/' + blog._id + '?_method=PUT' %>" method="POST">
+            <div class="form-group">
+                <label>TITLE:</label>
+                <input type="text" name="title" value="<%= typeof blog !== 'undefined' ? blog.title : (typeof title !== 'undefined' ? title : '') %>" required>
+            </div>
+
+            <div class="form-group">
+                <label>CONTENT:</label>
+                <textarea name="content" required><%= typeof blog !== 'undefined' ? blog.content : (typeof content !== 'undefined' ? content : '') %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>STATE:</label>
+                <select name="state" required>
+                    <option value="draft" <%= (typeof blog !== 'undefined' && blog.state === 'draft') ? 'selected' : '' %>>DRAFT</option>
+                    <option value="published" <%= (typeof blog !== 'undefined' && blog.state === 'published') ? 'selected' : '' %>>PUBLISHED</option>
+                </select>
+                <div class="state-description">
+                    DRAFT: Private. PUBLISHED: Public.
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <%= typeof blog === 'undefined' ? 'CREATE' : 'UPDATE' %>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <footer class="footer">
+        BLOG V1
+    </footer>
+</body>
+</html>

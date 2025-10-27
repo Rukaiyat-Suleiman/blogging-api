@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERROR</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace; 
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px 0;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* CONTAINER - RED BORDER for ERROR */
+        .container {
+            max-width: 500px;
+            width: 100%;
+            border: 3px solid #f00; /* Red border to signify error */
+            padding: 30px;
+            background: #222;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            color: #f00; /* Red title for ERROR */
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        /* DETAILS BLOCK */
+        .error-detail {
+            font-size: 0.9em;
+            color: #ff0; /* Yellow for details/code */
+            background: #111;
+            border: 1px dashed #f00; /* Dashed red border for the detail block */
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: left;
+            word-break: break-all;
+        }
+        
+        /* BUTTON */
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1.1em;
+            transition: all 0.2s ease-in-out;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        .btn:hover {
+            background: #fff;
+            color: #000;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 2px solid #fff;
+            font-weight: bold;
+            color: #fff;
+            font-size: 0.9em;
+            width: 500px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>ERROR</h2>
+        <p class="error-message"><%= message %></p>
+        <% if (error) { %>
+            <p class="error-detail"><small>DETAILS: <%= error %></small></p>
+        <% } %>
+        <a href="/auth/login" class="btn">LOGIN</a>
+    </div>
+    
+    <footer class="footer">
+        ERROR V1
+    </footer>
+</body>
+</html>

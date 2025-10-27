@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUKI BLOGS</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace; 
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px 0; /* Adjusted padding for better center alignment */
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            text-decoration: underline;
+            text-align: center;
+            color: #fff;
+        }
+        
+        h2.blog-title {
+            font-size: 1.6em; /* Slightly increased for visibility */
+            margin: 0 0 10px 0;
+            color: #ff0;
+        }
+        
+        .container {
+            max-width: 900px; /* Slightly wider container for blog list */
+            width: 100%;
+            border: 3px solid #fff;
+            padding: 30px;
+            background: #222;
+        }
+
+        a {
+            color: #ff0;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+        
+        header nav {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* BUTTON STYLING (NAV & SORT) */
+        .btn, .controls button {
+            display: inline-block;
+            padding: 8px 12px;
+            border: 2px solid #fff;
+            background: #000;
+            color: #fff;
+            margin: 0 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .btn:hover, .controls button:hover {
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* FORM CONTROLS */
+        .controls {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #444;
+        }
+        
+        .search-box {
+            width: calc(100% - 24px); /* Account for padding */
+            padding: 10px;
+            font-size: 1em;
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #fff;
+            color: #000;
+            border: 2px solid #fff; /* White border for emphasis */
+            margin-bottom: 15px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        
+        .controls > div {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .controls label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #ff0; /* Highlight labels */
+        }
+
+        select {
+            padding: 8px;
+            margin-right: 20px;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            font-family: 'Consolas', 'Monaco', monospace;
+            appearance: none; /* Remove default select styling */
+            cursor: pointer;
+        }
+
+        /* BLOG LIST STYLES */
+        .blog-item {
+            border: 2px solid #fff;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #333;
+        }
+        
+        .blog-meta {
+            font-size: 0.9em;
+            color: #aaa;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px dotted #444;
+        }
+        .blog-content {
+            margin-bottom: 15px;
+        }
+        .read-more {
+            font-weight: bold;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        /* PAGINATION */
+        .pagination {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .pagination a {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid #fff;
+            background: #000;
+            color: #fff;
+            transition: background 0.2s;
+        }
+        .pagination a:hover {
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+        }
+        /* Style for current page */
+        .pagination a[style*="background:#fff"] {
+            background: #fff !important;
+            color: #000 !important;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* NO BLOGS MESSAGE */
+        .no-blogs {
+            text-align: center;
+            padding: 40px;
+            color: #fff;
+            background: #333;
+            border: 2px solid #fff;
+        }
+        .no-blogs h2 {
+            font-size: 1.5em;
+            text-decoration: none;
+        }
+        .no-blogs p {
+            margin-top: 10px;
+            color: #aaa;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 2px solid #fff;
+            font-weight: bold;
+            color: #fff;
+            font-size: 0.9em;
+            width: 900px; /* Match container width */
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RUKI BLOGS</h1>
+            <nav>
+                <a href="/dashboard" class="btn">DASHBOARD</a>
+                <a href="/auth/signup" class="btn">SIGNUP</a>
+                <a href="/auth/logout" class="btn">LOGOUT</a>
+            </nav>
+        </header>
+
+        <div class="controls">
+            <form id="searchForm" method="GET" action="/">
+                <input type="text" name="search" class="search-box" placeholder="SEARCH BLOGS..." value="<%= search %>">
+                
+                <div>
+                    <label>STATE:</label>
+                    <select name="filter" id="filter" onchange="this.form.submit()">
+                        <% Object.entries(filterOptions).forEach(([value, label]) => { %>
+                            <option value="<%= value %>" <%= filter === value ? 'selected' : '' %>><%= label %></option>
+                        <% }); %>
+                    </select>
+
+                    <label>SORT:</label>
+                    <select name="sort" id="sort" onchange="this.form.submit()">
+                        <% Object.entries(sortOptions).forEach(([value, label]) => { %>
+                            <option value="<%= value %>" <%= sort === value ? 'selected' : '' %>><%= label %></option>
+                        <% }); %>
+                    </select>
+                    <input type="hidden" name="order" value="<%= order === 1 ? 'asc' : 'desc' %>">
+                    <button type="button" class="btn" onclick="toggleOrder()"><%= order === 1 ? 'ASC' : 'DESC' %></button>
+                </div>
+            </form>
+        </div>
+
+        <main>
+            <% if (blogs && blogs.length > 0) { %>
+                <% blogs.forEach(blog => { %>
+                    <div class="blog-item">
+                        <h2 class="blog-title"><%= blog.title %></h2>
+                        <div class="blog-meta">
+                            BY <%= blog.author.first_name %> <%= blog.author.last_name %> | 
+                            <%= new Date(blog.createdAt).toLocaleDateString() %> | 
+                            <%= blog.readCount %> READS | <%= blog.readingTime %> MIN READ
+                        </div>
+                        <div class="blog-content">
+                            <%= blog.content.substring(0, 200) %>...
+                        </div>
+                        <a href="/blogs/<%= blog._id %>" class="read-more">READ FULL</a>
+                    </div>
+                <% }); %>
+
+                <div class="pagination">
+                    <% if (pagination.page > 1) { %>
+                        <a href="?page=<%= pagination.page - 1 %>&search=<%= search %>&sort=<%= sort %>&order=<%= order === 1 ? 'asc' : 'desc' %>&filter=<%= filter %>">PREV</a>
+                    <% } %>
+                    
+                    <% for(let i = 1; i <= pagination.totalPages; i++) { %>
+                        <a href="?page=<%= i %>&search=<%= search %>&sort=<%= sort %>&order=<%= order === 1 ? 'asc' : 'desc' %>&filter=<%= filter %>"
+                           <%= pagination.page === i ? 'style="background:#fff;color:#000;"' : '' %>>
+                            <%= i %>
+                        </a>
+                    <% } %>
+
+                    <% if (pagination.page < pagination.totalPages) { %>
+                        <a href="?page=<%= pagination.page + 1 %>&search=<%= search %>&sort=<%= sort %>&order=<%= order === 1 ? 'asc' : 'desc' %>&filter=<%= filter %>">NEXT</a>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <div class="no-blogs">
+                    <h2>NO BLOGS FOUND</h2>
+                    <p>ADJUST YOUR SEARCH TERMS OR CREATE ONE NOW.</p>
+                </div>
+            <% } %>
+        </main>
+    </div>
+    
+    <footer class="footer">
+        BLOGS V1
+    </footer>
+
+    <script>
+        function toggleOrder() {
+            const form = document.getElementById('searchForm');
+            const orderInput = form.querySelector('input[name="order"]');
+            orderInput.value = orderInput.value === 'asc' ? 'desc' : 'asc';
+            form.submit();
+        }
+
+        let searchTimeout;
+        document.querySelector('input[name="search"]').addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                this.form.submit();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

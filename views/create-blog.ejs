@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof blog === 'undefined' ? 'NEW BLOG' : 'EDIT BLOG' %></title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px 0;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* CONTAINER */
+        .container {
+            max-width: 700px;
+            width: 100%;
+            border: 3px solid #fff;
+            padding: 30px;
+            background: #222;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-decoration: underline;
+            text-align: center;
+            color: #fff;
+        }
+        
+        /* LINKS */
+        a {
+            color: #ff0;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        /* FORM ELEMENTS */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #ff0; /* Highlight labels */
+            text-transform: uppercase;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            background: #000; /* Dark background for inputs */
+            color: #fff;
+            border: 2px solid #fff;
+            margin-bottom: 15px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 250px; /* Increased height */
+            resize: vertical;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        /* STATE DESCRIPTION */
+        .state-description {
+            font-size: 0.9em;
+            color: #aaa;
+            margin-top: -10px; /* Pull up closer to the select box */
+            margin-bottom: 15px;
+        }
+        
+        /* BUTTON */
+        .form-actions {
+            text-align: right;
+            margin-top: 30px;
+        }
+        .btn-submit {
+            background: #000;
+            color: #fff;
+            padding: 12px 20px;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.2s ease-in-out;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        .btn-submit:hover {
+            background: #fff;
+            color: #000;
+        }
+        
+        /* ERROR MESSAGE */
+        .error-message {
+            background: #f00;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #000;
+            font-weight: bold;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 2px solid #fff;
+            font-weight: bold;
+            color: #fff;
+            font-size: 0.9em;
+            width: 700px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Re-direct link to the main blog list or dashboard -->
+        <a href="<%= typeof blog === 'undefined' ? '/dashboard' : '/blogs/' + blog._id %>" class="back-link">← BACK</a>
+        
+        <h2><%= typeof blog === 'undefined' ? 'CREATE BLOG' : 'EDIT BLOG' %></h2>
+
+        <% if (typeof error !== 'undefined') { %>
+            <div class="error-message"><%= message %></div>
+        <% } %>
+
+        <form action="<%= typeof blog === 'undefined' ? '/blogs' : '/blogs/' + blog._id + '?_method=PUT' %>" method="POST">
+            <div class="form-group">
+                <label for="title">TITLE:</label>
+                <input type="text" id="title" name="title" value="<%= typeof blog !== 'undefined' ? blog.title : (typeof title !== 'undefined' ? title : '') %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="content">CONTENT:</label>
+                <textarea id="content" name="content" required><%= typeof blog !== 'undefined' ? blog.content : (typeof content !== 'undefined' ? content : '') %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="state">STATE:</label>
+                <select id="state" name="state" required>
+                    <option value="draft" <%= (typeof blog !== 'undefined' && blog.state === 'draft') ? 'selected' : '' %>>DRAFT</option>
+                    <option value="published" <%= (typeof blog !== 'undefined' && blog.state === 'published') ? 'selected' : '' %>>PUBLISHED</option>
+                </select>
+                <div class="state-description">
+                    DRAFT: Private. PUBLISHED: Public.
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <%= typeof blog === 'undefined' ? 'CREATE' : 'UPDATE' %>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <footer class="footer">
+        BLOG V1
+    </footer>
+</body>
+</html>
